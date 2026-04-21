@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body style="background: linear-gradient(to right, #4facfe, #00f2fe); min-height:100vh;">
+
+<div class="container text-center mt-5">
+
+    <!-- Logo -->
+    <img src="{% static 'images/weather.png' %}" width="80" class="mb-3">
+
+    <h1 class="text-white mb-4">🌤 Weather App</h1>
+
+    <!-- Search Box -->
+    <form method="POST" class="mb-4">
+        {% csrf_token %}
+        <div class="input-group w-50 mx-auto">
+            <input type="text" name="city" class="form-control" placeholder="Enter city..." required>
+            <button class="btn btn-dark">Search</button>
+        </div>
+    </form>
+
+    <!-- Weather Card -->
+    {% if data %}
+    <div class="card shadow-lg mx-auto" style="max-width: 400px; border-radius: 20px;">
+        <div class="card-body">
+
+            <h3 class="mb-3">📍 {{ city }}</h3>
+
+            {% if data.error %}
+                <p class="text-danger">{{ data.error }}</p>
+            {% else %}
+
+            <img src="https://openweathermap.org/img/wn/{{ data.icon }}@2x.png">
+
+            <h2 class="fw-bold">{{ data.temp }}</h2>
+            <p class="text-muted">{{ data.description }}</p>
+
+            <hr>
+
+            <p>💧 Humidity: {{ data.humidity }}%</p>
+            <p>ضغط Pressure: {{ data.pressure }} hPa</p>
+            <p>🌍 Country: {{ data.country_code }}</p>
+
+            {% endif %}
+
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
